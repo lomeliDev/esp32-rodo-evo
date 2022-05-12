@@ -6,13 +6,12 @@
 
 void setup() {
   Serial.begin(38400);
-  Serial.write("Se inicializo el ESP32");
+  Serial.println("Se inicializo el ESP32");
   setupBluetooth();
-  Serial.write("Se inicializo el Bluetooth");
+  Serial.println("Se inicializo el Bluetooth");
 }
 
 void loop() {
   loopReadBluetooth();
-  logBluetooth();
   delay(10);
 }

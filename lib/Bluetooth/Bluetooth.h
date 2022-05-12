@@ -24,5 +24,6 @@ void writeBluetooth(byte _byte);
 void writeBluetoothText(String _text);
 void loopReadBluetooth();
 void logBluetooth();
+void writeBluetoothExample(String _text);
 
 #endif

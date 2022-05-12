@@ -34,9 +34,11 @@ class MyCallbacks : public BLECharacteristicCallbacks
         {
             uint lengthBLE = pCharacteristic->getValue().length();
             byte msg[lengthBLE];
+            char txData[lengthBLE];
             for (size_t i = 0; i < lengthBLE; i++)
             {
                 msg[i] = pCharacteristic->getValue()[i];
+                txData[i] = pCharacteristic->getValue()[i];
             }
 
             if (debug == true)
@@ -44,8 +46,9 @@ class MyCallbacks : public BLECharacteristicCallbacks
                 Serial.write(msg, lengthBLE);
             }
 
-            writeBluetoothText("hola");
+            String myData = String(txData);
 
+            writeBluetoothExample(myData);
         }
 
         rx_received = true;
@@ -154,5 +157,57 @@ void loopReadBluetooth()
     if (rx_received == true)
     {
         rx_received = false;
+    }
+}
+
+void writeBluetoothExample(String _text)
+{
+    if (deviceConnected == true)
+    {
+        if (_text.indexOf("SincronizarVentas") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"SincronizarVentas\", \"status\": true, \"message\": \"Ventas sincronizadas\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("IniciarVenta") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"IniciarVenta\", \"status\": true, \"message\": \"Venta Iniciada\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("UltimaVenta") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"UltimaVenta\", \"status\": true, \"message\": \"Ultima venta\", \"data\": {\"type\": 1, \"costo\": 200.54, \"precioUnitario\": 500.15, \"alarma\": \"0xAA0xAA\", \"idCliente\": \"0xAA0xAA0xAA0xAA0xAA0xAA0xAA0xAA\", \"fechaServicio\": \"011221\", \"horaServicio\": \"000000\", \"volumenRegistrado\": 814.45}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("AjustarRTC") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"AjustarRTC\", \"status\": true, \"message\": \"RTC OK\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("AjustarRTC") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"AjustarRTC\", \"status\": true, \"message\": \"RTC OK\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("WriteConfigParams") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"AjustarRTC\", \"status\": true, \"message\": \"Configs guardadas\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("ReadConfigParams") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"AjustarRTC\", \"status\": true, \"message\": \"Data Configs\", \"data\": {\"serieEquipo\": \"X-XX-XXXX\", \"factorCalibracion\": 800.45, \"precioUnitario\": 45.45, \"claveAcceso\": 5, \"numeroUnidad\": 3}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("ReporteTotal") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"ReporteTotal\", \"status\": true, \"message\": \"Reporte OK\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
+        else if (_text.indexOf("ReporteParcial") >= 0)
+        {
+            pTxCharacteristic->setValue("{\"type\": \"ReporteParcial\", \"status\": true, \"message\": \"Reporte OK\", \"data\": {}}");
+            pTxCharacteristic->notify();
+        }
     }
 }
